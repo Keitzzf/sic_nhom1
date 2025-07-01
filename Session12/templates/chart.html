@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RaspberryPi Visualization</title>
+    <style type="text/css">
+        .auto-style1 {
+            border: 1px solid #808080;
+        }
+        .auto-style2 {
+            border: 1px solid #008080;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <center>
+        <strong>Temperature, Humidity Data Visualization</strong>
+        <br><br>
+        <table style="width: 100%">
+            <tr>
+                <td width="50%">
+                    <table cellspacing="1" class="auto-style1" style="width: 100%" id="dataTable">
+                        <!-- Data will be populated by JavaScript -->
+                    </table>
+                </td>
+                <td width="50%">
+                    <div>
+                        <canvas id="Chart"></canvas>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br>
+    </center>
+    <script>
+        // Sample data - replace with your actual data
+        var result = [
+            ['2024-01-01 10:00', 23.5],
+            ['2024-01-01 11:00', 24.2],
+            ['2024-01-01 12:00', 25.8],
+            ['2024-01-01 13:00', 26.1],
+            ['2024-01-01 14:00', 27.3],
+            ['2024-01-01 15:00', 26.9],
+            ['2024-01-01 16:00', 25.4],
+            ['2024-01-01 17:00', 24.7],
+            ['2024-01-01 18:00', 23.9],
+            ['2024-01-01 19:00', 22.8]
+        ];
+
+        // Populate the data table
+        var tableBody = '';
+        result.forEach(function(item) {
+            tableBody += '<tr>';
+            tableBody += '<td class="auto-style2" style="width: 50%">Time: ' + item[0] + '</td>';
+            tableBody += '<td class="auto-style2" style="width: 50%">Temperature: ' + item[1] + '</td>';
+            tableBody += '</tr>';
+        });
+        document.getElementById('dataTable').innerHTML = tableBody;
+
+        // Create the chart
+        var ctx = document.getElementById('Chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: result.map(function(item) { return item[0]; }),
+                datasets: [{
+                    label: "Temperature",
+                    backgroundColor: 'rgba(255, 120, 132, 0.2)',
+                    borderColor: 'rgba(255, 128, 132, 1)',
+                    fill: false,
+                    tension: 0.3,
+                    data: result.map(function(item) { return item[1]; })
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 10
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 50
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
